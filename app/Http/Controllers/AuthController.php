@@ -30,6 +30,7 @@ class AuthController extends Controller
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|min:2|max:100',
             'email' => 'required|string|email|max:100|unique:users',
+            'nohp' => 'required|string|max:15|unique:users',
             'password' => 'required|string|confirmed|min:6',
         ]);
 
@@ -40,6 +41,7 @@ class AuthController extends Controller
         $user = User::create([
                 'name' => $request->name,
                 'email' => $request->email,
+                'nohp' => $request->nohp,
                 'password' => Hash::make($request->password)
             ]);
 
@@ -119,7 +121,7 @@ class AuthController extends Controller
             'token_type' => 'bearer',
             'expires_in' => auth()->factory()->getTTL() * 60
         ];
-        
+
         $res['status'] = true;
         $res['data'] = $data;
         return response()->json($res);
