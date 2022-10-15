@@ -26,6 +26,7 @@ class Kost extends Migration
             $table->integer('id_provinsi');
             $table->integer('id_kabupaten');
             $table->integer('id_kecamatan');
+            $table->integer('id_desa');
             $table->string('alamat');
             $table->string('lat');
             $table->string('long');

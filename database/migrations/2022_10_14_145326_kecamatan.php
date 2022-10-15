@@ -17,7 +17,7 @@ class Kecamatan extends Migration
             $table->id();
             $table->integer('id_kabupaten');
             $table->string('nama_kecamatan');
-            $table->string('kodepos');
+            // $table->string('kodepos');
             $table->timestamps();
 
             // $table->foreign('id_kabupaten')->references('id')->on('kabupaten');

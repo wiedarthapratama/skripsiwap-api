@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class Pekerja extends Migration
+class Desa extends Migration
 {
     /**
      * Run the migrations.
@@ -13,20 +13,13 @@ class Pekerja extends Migration
      */
     public function up()
     {
-        Schema::create('pekerja', function (Blueprint $table) {
+        Schema::create('desa', function (Blueprint $table) {
             $table->id();
-            $table->string('nama');
-            $table->string('nohp');
-            // $table->integer('id_user');
-            $table->integer('id_provinsi');
-            $table->integer('id_kabupaten');
             $table->integer('id_kecamatan');
-            $table->string('alamat');
+            $table->string('nama_desa');
             $table->timestamps();
 
-            // $table->foreign('id_provinsi')->references('id')->on('provinsi');
             // $table->foreign('id_kabupaten')->references('id')->on('kabupaten');
-            // $table->foreign('id_kecamatan')->references('id')->on('kecamatan');
         });
     }
 
@@ -37,6 +30,6 @@ class Pekerja extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('pekerja');
+        Schema::dropIfExists('desa');
     }
 }
