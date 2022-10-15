@@ -40,4 +40,9 @@ class Pemilik extends Model
     {
         return $this->hasOne('App\Models\Desa', 'id_desa', 'id');
     }
+
+    function user()
+    {
+        return $this->hasOne('App\Models\User', 'id', 'id_user');
+    }
 }

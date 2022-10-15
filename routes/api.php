@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\PemilikController;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,7 +22,14 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::group(['middleware' => 'api'], function($router) {
     Route::post('/register', [AuthController::class, 'register']);
     Route::post('/login', [AuthController::class, 'login']);
-    Route::get('/logout', [AuthController::class, 'logout']);
-    Route::get('/refresh', [AuthController::class, 'refresh']);
-    Route::get('/profile', [AuthController::class, 'profile']);
+    
+    Route::middleware(['auth'])->group(function () {
+        Route::get('/logout', [AuthController::class, 'logout']);
+        Route::get('/refresh', [AuthController::class, 'refresh']);
+        Route::get('/profile', [AuthController::class, 'profile']);
+        // pemilik
+        Route::post('/pemilik', [PemilikController::class, 'save']);
+        Route::get('/pemilik/{id}', [PemilikController::class, 'get']);
+        Route::post('/pemilik/{id}', [PemilikController::class, 'update']);
+    });
 });
