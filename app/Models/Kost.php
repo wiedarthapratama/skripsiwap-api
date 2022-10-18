@@ -28,7 +28,8 @@ class Kost extends Model
         'id_desa',
         'alamat',
         'lat',
-        'long'
+        'long',
+        'id_kost_jenis'
     ];
 
     function desa()
@@ -59,5 +60,10 @@ class Kost extends Model
     function stok()
     {
         return $this->hasMany('App\Models\KostStok', 'id_kost', 'id');
+    }
+
+    function jenis()
+    {
+        return $this->hasOne('App\Models\KostJenis', 'id_kost_jenis', 'id');
     }
 }

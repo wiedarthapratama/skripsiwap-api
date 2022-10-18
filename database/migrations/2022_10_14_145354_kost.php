@@ -30,6 +30,7 @@ class Kost extends Migration
             $table->string('alamat');
             $table->string('lat');
             $table->string('long');
+            $table->integer('id_kost_jenis');
             $table->timestamps();
 
             // $table->foreign('id_provinsi')->references('id')->on('provinsi');

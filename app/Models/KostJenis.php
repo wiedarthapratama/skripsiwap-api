@@ -13,12 +13,13 @@ class KostJenis extends Model
     protected $primaryKey = 'id';
     // public $timestamps = false;
     protected $fillable = [
-        'id_kost',
-        'nama'
+        'id_user',
+        'nama',
+        'foto'
     ];
 
-    // function kost()
-    // {
-    //     return $this->belongsTo('App\Models\Kecamatan', 'id_kecamatan', 'id');
-    // }
+    function user()
+    {
+        return $this->hasOne('App\Models\User', 'id', 'id_user');
+    }
 }

@@ -15,8 +15,9 @@ class KostJenis extends Migration
     {
         Schema::create('kost_jenis', function (Blueprint $table) {
             $table->id();
-            $table->integer('id_kost');
+            $table->integer('id_user');
             $table->string('nama');
+            $table->string('foto');
             $table->timestamps();
 
             // $table->foreign('id_kost')->references('id')->on('kost');

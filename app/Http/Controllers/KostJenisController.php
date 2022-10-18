@@ -4,9 +4,9 @@ namespace App\Http\Controllers;
 
 use Validator;
 use Illuminate\Http\Request;
-use App\Models\Pekerja;
+use App\Models\KostJenis;
 
-class PekerjaController extends Controller
+class KostJenisController extends Controller
 {
     private $api;
 
@@ -19,17 +19,17 @@ class PekerjaController extends Controller
     {
         try {
             $id_user = $this->api->getUserLogin();
-            $data = Pekerja::with('user')
+            $data = KostJenis::with('user')
                 ->where('id_user', $id_user)
                 ->get();
             $code = 200;
             $res['status'] = true;
-            $res['message'] = "Pekerja berhasil ditampilkan";
+            $res['message'] = "KostJenis berhasil ditampilkan";
             $res['data'] = $data;
         } catch (\Exception $e) {
             $code = 500;
             $res['status'] = false;
-            $res['message'] = "Pekerja gagal ditampilkan";
+            $res['message'] = "KostJenis gagal ditampilkan";
             $res['error'] = $e->getMessage();
         }
         return response()->json($res, $code);   
@@ -39,18 +39,18 @@ class PekerjaController extends Controller
     {
         try {
             $id_user = $this->api->getUserLogin();
-            $data = Pekerja::with('user')
+            $data = KostJenis::with('user')
                 ->where('id', $id)
                 ->where('id_user', $id_user)
                 ->first();
             $code = 200;
             $res['status'] = true;
-            $res['message'] = "Pekerja berhasil ditampilkan";
+            $res['message'] = "KostJenis berhasil ditampilkan";
             $res['data'] = $data;
         } catch (\Exception $e) {
             $code = 500;
             $res['status'] = false;
-            $res['message'] = "Pekerja gagal ditampilkan";
+            $res['message'] = "KostJenis gagal ditampilkan";
             $res['error'] = $e->getMessage();
         }
         return response()->json($res, $code);   
@@ -62,26 +62,24 @@ class PekerjaController extends Controller
         $input['id_user'] = $this->api->getUserLogin();
         $validator = Validator::make($input, [
             'nama' => 'required',
-            'nohp' => 'required',
-            'id_user' => 'required|unique:pekerja',
-            'id_provinsi' => 'required',
-            'id_kabupaten' => 'required',
-            'id_kecamatan' => 'required',
-            'id_desa' => 'required',
-            'alamat' => 'required',
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
         if($validator->fails()) {
             return response()->json($validator->errors(), 400);
         }
         try {
-            Pekerja::create($input);
+            $imageName = $input['id_user'].'-'.time().'.'.$request->image->extension();  
+            $request->image->move(public_path('images'), $imageName);
+            $input['foto'] = url('images').'/'.$imageName;
+
+            KostJenis::create($input);
             $code = 200;
             $res['status'] = true;
-            $res['message'] = "Pekerja berhasil diinput";
+            $res['message'] = "KostJenis berhasil diinput";
         } catch (\Exception $e) {
             $code = 500;
             $res['status'] = false;
-            $res['message'] = "Pekerja gagal diinput";
+            $res['message'] = "KostJenis gagal diinput";
             $res['error'] = $e->getMessage();
         }
         return response()->json($res, $code);
@@ -93,35 +91,33 @@ class PekerjaController extends Controller
         $input['id_user'] = $this->api->getUserLogin();
         $validator = Validator::make($input, [
             'nama' => 'required',
-            'nohp' => 'required',
-            'id_user' => 'required|unique:pekerja,id_user,'.$input['id_user'],
-            'id_provinsi' => 'required',
-            'id_kabupaten' => 'required',
-            'id_kecamatan' => 'required',
-            'id_desa' => 'required',
-            'alamat' => 'required',
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
         if($validator->fails()) {
             return response()->json($validator->errors(), 400);
         }
         try {
-            $pekerja = Pekerja::find($id);
-            if($pekerja->id!=null){
-                if($pekerja->id_user==$input['id_user']){
-                    $pekerja->update($input);
+            $kost_jenis = KostJenis::find($id);
+            if($kost_jenis->id!=null){
+                if($kost_jenis->id_user==$input['id_user']){
+                    $imageName = $input['id_user'].'-'.time().'.'.$request->image->extension();  
+                    $request->image->move(public_path('images'), $imageName);
+                    $input['foto'] = url('images').'/'.$imageName;
+
+                    $kost_jenis->update($input);
                     $code = 200;
                     $res['status'] = true;
-                    $res['message'] = "Pekerja berhasil diupdate";
+                    $res['message'] = "KostJenis berhasil diupdate";
                 }else{
                     $code = 404;
                     $res['status'] = false;
-                    $res['message'] = "Pekerja berhasil diupdate";        
+                    $res['message'] = "KostJenis berhasil diupdate";        
                 }
             }
         } catch (\Exception $e) {
             $code = 500;
             $res['status'] = false;
-            $res['message'] = "Pekerja gagal diupdate";
+            $res['message'] = "KostJenis gagal diupdate";
             $res['error'] = $e->getMessage();
         }
         return response()->json($res, $code);
@@ -130,23 +126,23 @@ class PekerjaController extends Controller
     {
         try {
             $id_user = $this->api->getUserLogin();
-            $data = Pekerja::with('user')
+            $data = KostJenis::with('user')
                 ->where('id', $id)
                 ->where('id_user', $id_user)
                 ->delete();
             if($data){
                 $code = 200;
                 $res['status'] = true;
-                $res['message'] = "Pekerja berhasil dihapus";
+                $res['message'] = "KostJenis berhasil dihapus";
             }else{
                 $code = 500;
                 $res['status'] = false;
-                $res['message'] = "Pekerja gagal dihapus";
+                $res['message'] = "KostJenis gagal dihapus";
             }
         } catch (\Exception $e) {
             $code = 500;
             $res['status'] = false;
-            $res['message'] = "Pekerja gagal dihapus";
+            $res['message'] = "KostJenis gagal dihapus";
             $res['error'] = $e->getMessage();
         }
         return response()->json($res, $code);   

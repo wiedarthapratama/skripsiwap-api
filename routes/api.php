@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\PemilikController;
 use App\Http\Controllers\PekerjaController;
+use App\Http\Controllers\KostJenisController;
 
 /*
 |--------------------------------------------------------------------------
@@ -38,5 +39,11 @@ Route::group(['middleware' => 'api'], function($router) {
         Route::get('/pekerja/{id}', [PekerjaController::class, 'get']);
         Route::post('/pekerja/{id}', [PekerjaController::class, 'update']);
         Route::delete('/pekerja/{id}', [PekerjaController::class, 'delete']);
+        // pekerja
+        Route::get('/kost-jenis', [KostJenisController::class, 'all']);
+        Route::post('/kost-jenis', [KostJenisController::class, 'save']);
+        Route::get('/kost-jenis/{id}', [KostJenisController::class, 'get']);
+        Route::post('/kost-jenis/{id}', [KostJenisController::class, 'update']);
+        Route::delete('/kost-jenis/{id}', [KostJenisController::class, 'delete']);
     });
 });
