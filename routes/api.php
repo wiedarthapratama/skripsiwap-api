@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\PemilikController;
+use App\Http\Controllers\PekerjaController;
 
 /*
 |--------------------------------------------------------------------------
@@ -31,5 +32,11 @@ Route::group(['middleware' => 'api'], function($router) {
         Route::post('/pemilik', [PemilikController::class, 'save']);
         Route::get('/pemilik/{id}', [PemilikController::class, 'get']);
         Route::post('/pemilik/{id}', [PemilikController::class, 'update']);
+        // pekerja
+        Route::get('/pekerja', [PekerjaController::class, 'all']);
+        Route::post('/pekerja', [PekerjaController::class, 'save']);
+        Route::get('/pekerja/{id}', [PekerjaController::class, 'get']);
+        Route::post('/pekerja/{id}', [PekerjaController::class, 'update']);
+        Route::delete('/pekerja/{id}', [PekerjaController::class, 'delete']);
     });
 });

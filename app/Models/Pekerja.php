@@ -15,6 +15,7 @@ class Pekerja extends Model
     protected $fillable = [
         'nama',
         'nohp',
+        'id_user',
         'id_provinsi',
         'id_kabupaten',
         'id_kecamatan',
@@ -40,5 +41,10 @@ class Pekerja extends Model
     function desa()
     {
         return $this->hasOne('App\Models\Desa', 'id_desa', 'id');
+    }
+
+    function user()
+    {
+        return $this->hasOne('App\Models\User', 'id', 'id_user');
     }
 }

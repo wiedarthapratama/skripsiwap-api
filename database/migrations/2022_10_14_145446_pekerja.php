@@ -17,7 +17,7 @@ class Pekerja extends Migration
             $table->id();
             $table->string('nama');
             $table->string('nohp');
-            // $table->integer('id_user');
+            $table->integer('id_user');
             $table->integer('id_provinsi');
             $table->integer('id_kabupaten');
             $table->integer('id_kecamatan');
