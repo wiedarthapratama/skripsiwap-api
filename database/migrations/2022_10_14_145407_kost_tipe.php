@@ -19,6 +19,11 @@ class KostTipe extends Migration
             $table->integer('id_kost_jenis');
             $table->integer('jumlah_kontrakan');
             $table->integer('harga_per_bulan');
+            $table->integer('jumlah_ruang');
+            $table->boolean('is_perabot');
+            $table->boolean('is_rumah');
+            $table->boolean('is_kamar_mandi_dalam');
+            $table->boolean('is_listrik');
             $table->string('luas');
             $table->timestamps();
 
