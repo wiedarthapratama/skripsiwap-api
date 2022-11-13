@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class KostStok extends Migration
+class Pengontrak extends Migration
 {
     /**
      * Run the migrations.
@@ -13,15 +13,13 @@ class KostStok extends Migration
      */
     public function up()
     {
-        Schema::create('kost_stok', function (Blueprint $table) {
+        Schema::create('pengontrak', function (Blueprint $table) {
             $table->id();
-            $table->integer('id_kost');
+            $table->integer('id_kost_jenis');
             $table->integer('id_user');
-            $table->string('tersedia');
+            $table->date('tanggal_masuk');
+            $table->string('status');
             $table->timestamps();
-
-            // $table->foreign('id_kost')->references('id')->on('kost');
-            // $table->foreign('id_user')->references('id')->on('users');
         });
     }
 
@@ -32,6 +30,6 @@ class KostStok extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('kost_stok');
+        Schema::dropIfExists('pengontrak');
     }
 }

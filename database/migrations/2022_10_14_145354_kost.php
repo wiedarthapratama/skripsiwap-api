@@ -18,11 +18,11 @@ class Kost extends Migration
             $table->integer('id_pemilik');
             $table->string('judul');
             $table->text('deskripsi');
-            $table->integer('harga');
-            $table->string('status');
-            $table->string('jenis');
-            $table->integer('jumlah');
-            $table->string('listrik');
+            // $table->integer('harga');
+            // $table->string('status');
+            // $table->string('jenis');
+            // $table->integer('jumlah');
+            // $table->string('listrik');
             $table->integer('id_provinsi');
             $table->integer('id_kabupaten');
             $table->integer('id_kecamatan');
@@ -30,7 +30,7 @@ class Kost extends Migration
             $table->string('alamat');
             $table->string('lat');
             $table->string('long');
-            $table->integer('id_kost_jenis');
+            // $table->integer('id_kost_jenis');
             $table->timestamps();
 
             // $table->foreign('id_provinsi')->references('id')->on('provinsi');
