@@ -6,6 +6,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\PemilikController;
 use App\Http\Controllers\PekerjaController;
 use App\Http\Controllers\KostJenisController;
+use App\Http\Controllers\KostController;
 
 /*
 |--------------------------------------------------------------------------
@@ -45,5 +46,11 @@ Route::group(['middleware' => 'api'], function($router) {
         Route::get('/kost-jenis/{id}', [KostJenisController::class, 'get']);
         Route::post('/kost-jenis/{id}', [KostJenisController::class, 'update']);
         Route::delete('/kost-jenis/{id}', [KostJenisController::class, 'delete']);
+        // pekerja
+        Route::get('/kost', [KostController::class, 'all']);
+        Route::post('/kost', [KostController::class, 'save']);
+        Route::get('/kost/{id}', [KostController::class, 'get']);
+        Route::post('/kost/{id}', [KostController::class, 'update']);
+        Route::delete('/kost/{id}', [KostController::class, 'delete']);
     });
 });

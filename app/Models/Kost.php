@@ -13,23 +13,16 @@ class Kost extends Model
     protected $primaryKey = 'id';
     // public $timestamps = false;
     protected $fillable = [
-        'id',
         'id_pemilik',
         'judul',
         'deskripsi',
-        'harga',
-        'status',
-        'jenis',
-        'jumlah',
-        'listrik',
         'id_provinsi',
         'id_kabupaten',
         'id_kecamatan',
         'id_desa',
         'alamat',
         'lat',
-        'long',
-        'id_kost_jenis'
+        'long'
     ];
 
     function desa()
@@ -57,13 +50,8 @@ class Kost extends Model
         return $this->hasOne('App\Models\Pemilik', 'id_pemilik', 'id');
     }
 
-    function stok()
+    function tipe()
     {
-        return $this->hasMany('App\Models\KostStok', 'id_kost', 'id');
-    }
-
-    function jenis()
-    {
-        return $this->hasOne('App\Models\KostJenis', 'id_kost_jenis', 'id');
+        return $this->hasMany('App\Models\KostTipe', 'id', 'id_kost');
     }
 }
