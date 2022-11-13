@@ -16,7 +16,7 @@ class KostTipe extends Migration
         Schema::create('kost_tipe', function (Blueprint $table) {
             $table->id();
             $table->integer('id_kost');
-            $table->integer('id_kost_jenis');
+            // $table->integer('id_kost_jenis');
             $table->integer('jumlah_kontrakan');
             $table->integer('harga_per_bulan');
             $table->integer('jumlah_ruang');

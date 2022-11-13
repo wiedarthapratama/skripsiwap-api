@@ -7,6 +7,7 @@ use App\Http\Controllers\PemilikController;
 use App\Http\Controllers\PekerjaController;
 use App\Http\Controllers\KostJenisController;
 use App\Http\Controllers\KostController;
+use App\Http\Controllers\KostTipeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -40,17 +41,23 @@ Route::group(['middleware' => 'api'], function($router) {
         Route::get('/pekerja/{id}', [PekerjaController::class, 'get']);
         Route::post('/pekerja/{id}', [PekerjaController::class, 'update']);
         Route::delete('/pekerja/{id}', [PekerjaController::class, 'delete']);
-        // pekerja
+        // kost jenis
         Route::get('/kost-jenis', [KostJenisController::class, 'all']);
         Route::post('/kost-jenis', [KostJenisController::class, 'save']);
         Route::get('/kost-jenis/{id}', [KostJenisController::class, 'get']);
         Route::post('/kost-jenis/{id}', [KostJenisController::class, 'update']);
         Route::delete('/kost-jenis/{id}', [KostJenisController::class, 'delete']);
-        // pekerja
+        // kost
         Route::get('/kost', [KostController::class, 'all']);
         Route::post('/kost', [KostController::class, 'save']);
         Route::get('/kost/{id}', [KostController::class, 'get']);
         Route::post('/kost/{id}', [KostController::class, 'update']);
         Route::delete('/kost/{id}', [KostController::class, 'delete']);
+        // kost tipe
+        Route::get('/kost-tipe/find-by-kost/{id}', [KostTipeController::class, 'all']);
+        Route::post('/kost-tipe', [KostTipeController::class, 'save']);
+        Route::get('/kost-tipe/{id}', [KostTipeController::class, 'get']);
+        Route::post('/kost-tipe/{id}', [KostTipeController::class, 'update']);
+        Route::delete('/kost-tipe/{id}', [KostTipeController::class, 'delete']);
     });
 });

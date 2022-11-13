@@ -14,7 +14,7 @@ class KostTipe extends Model
     // public $timestamps = false;
     protected $fillable = [
         'id_kost',
-        'id_kost_jenis',
+        // 'id_kost_jenis',
         'jumlah_kontrakan',
         'harga_per_bulan',
         'jumlah_ruang',
