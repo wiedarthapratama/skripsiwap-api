@@ -59,7 +59,8 @@ class KostTipeController extends Controller
             'jumlah_kontrakan' => 'required',
             'harga_per_bulan' => 'required',
             'jumlah_ruang' => 'required',
-            'luas' => 'required'
+            'luas' => 'required',
+            'nama_tipe' => 'required'
         ]);
         if($validator->fails()) {
             return response()->json($validator->errors(), 400);
@@ -86,7 +87,8 @@ class KostTipeController extends Controller
             'jumlah_kontrakan' => 'required',
             'harga_per_bulan' => 'required',
             'jumlah_ruang' => 'required',
-            'luas' => 'required'
+            'luas' => 'required',
+            'nama_tipe' => 'required'
         ]);
         if($validator->fails()) {
             return response()->json($validator->errors(), 400);

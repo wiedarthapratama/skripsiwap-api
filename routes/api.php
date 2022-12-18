@@ -9,6 +9,8 @@ use App\Http\Controllers\KostJenisController;
 use App\Http\Controllers\KostController;
 use App\Http\Controllers\KostTipeController;
 use App\Http\Controllers\AlamatController;
+use App\Http\Controllers\PengontrakController;
+use App\Http\Controllers\KostFotoController;
 
 /*
 |--------------------------------------------------------------------------
@@ -39,6 +41,9 @@ Route::group(['middleware' => 'api'], function($router) {
     Route::get('alamat/desa', [AlamatController::class,'desa']);
     Route::get('alamat/desa/{id}', [AlamatController::class,'desaByIdKecamatan']);
     Route::get('alamat/desa/{id}/detail', [AlamatController::class,'desaById']);
+
+    // pengontrak
+    Route::post('/pengontrak/home', [PengontrakController::class, 'home']);
     
     Route::middleware(['auth'])->group(function () {
         Route::get('/logout', [AuthController::class, 'logout']);
@@ -72,5 +77,9 @@ Route::group(['middleware' => 'api'], function($router) {
         Route::get('/kost-tipe/{id}', [KostTipeController::class, 'get']);
         Route::post('/kost-tipe/{id}', [KostTipeController::class, 'update']);
         Route::delete('/kost-tipe/{id}', [KostTipeController::class, 'delete']);
+        // kost foto
+        Route::post('/kost-foto', [KostFotoController::class, 'save']);
+        Route::post('/kost-foto/{id}', [KostFotoController::class, 'update']);
+        Route::delete('/kost-foto/{id}', [KostFotoController::class, 'delete']);
     });
 });

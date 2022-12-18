@@ -25,6 +25,7 @@ class KostTipe extends Migration
             $table->boolean('is_kamar_mandi_dalam');
             $table->boolean('is_listrik');
             $table->string('luas');
+            $table->string('nama_tipe');
             $table->timestamps();
 
             // $table->foreign('id_kost')->references('id')->on('kost');

@@ -22,7 +22,8 @@ class KostTipe extends Model
         'is_rumah',
         'is_kamar_mandi_dalam',
         'is_listrik',
-        'luas'
+        'luas',
+        'nama_tipe'
     ];
 
     // function user()
