@@ -8,6 +8,7 @@ use App\Http\Controllers\PekerjaController;
 use App\Http\Controllers\KostJenisController;
 use App\Http\Controllers\KostController;
 use App\Http\Controllers\KostTipeController;
+use App\Http\Controllers\AlamatController;
 
 /*
 |--------------------------------------------------------------------------
@@ -26,6 +27,18 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::group(['middleware' => 'api'], function($router) {
     Route::post('/register', [AuthController::class, 'register']);
     Route::post('/login', [AuthController::class, 'login']);
+        
+    Route::get('alamat/provinsi', [AlamatController::class,'provinsi']);
+    Route::get('alamat/provinsi/{id}/detail', [AlamatController::class,'provinsiById']);
+    Route::get('alamat/kabupaten', [AlamatController::class,'kabupaten']);
+    Route::get('alamat/kabupaten/{id}', [AlamatController::class,'kabupatenByIdProvinsi']);
+    Route::get('alamat/kabupaten/{id}/detail', [AlamatController::class,'kabupatenById']);
+    Route::get('alamat/kecamatan', [AlamatController::class,'kecamatan']);
+    Route::get('alamat/kecamatan/{id}', [AlamatController::class,'kecamatanByIdKabupaten']);
+    Route::get('alamat/kecamatan/{id}/detail', [AlamatController::class,'kecamatanById']);
+    Route::get('alamat/desa', [AlamatController::class,'desa']);
+    Route::get('alamat/desa/{id}', [AlamatController::class,'desaByIdKecamatan']);
+    Route::get('alamat/desa/{id}/detail', [AlamatController::class,'desaById']);
     
     Route::middleware(['auth'])->group(function () {
         Route::get('/logout', [AuthController::class, 'logout']);

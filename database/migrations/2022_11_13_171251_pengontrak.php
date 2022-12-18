@@ -19,6 +19,8 @@ class Pengontrak extends Migration
             $table->integer('id_user');
             $table->date('tanggal_masuk');
             $table->string('status');
+            $table->string('nomor_kost');
+            $table->integer('id_pendaftaran');
             $table->timestamps();
         });
     }
