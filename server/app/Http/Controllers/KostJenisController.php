@@ -69,7 +69,7 @@ class KostJenisController extends Controller
         }
         try {
             $imageName = $input['id_user'].'-'.time().'.'.$request->image->extension();  
-            $request->image->move(public_path('images'), $imageName);
+            $request->image->move('images', $imageName);
             $input['foto'] = url('images').'/'.$imageName;
 
             KostJenis::create($input);
@@ -101,7 +101,7 @@ class KostJenisController extends Controller
             if($kost_jenis->id!=null){
                 if($kost_jenis->id_user==$input['id_user']){
                     $imageName = $input['id_user'].'-'.time().'.'.$request->image->extension();  
-                    $request->image->move(public_path('images'), $imageName);
+                    $request->image->move('images', $imageName);
                     $input['foto'] = url('images').'/'.$imageName;
 
                     $kost_jenis->update($input);

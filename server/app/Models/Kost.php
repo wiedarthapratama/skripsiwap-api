@@ -27,31 +27,31 @@ class Kost extends Model
 
     function desa()
     {
-        return $this->hasOne('App\Models\Desa', 'id_desa', 'id');
+        return $this->hasOne('App\Models\Desa', 'id', 'id_desa');
     }
 
     function kecamatan()
     {
-        return $this->hasOne('App\Models\Kecamatan', 'id_kecamatan', 'id');
+        return $this->hasOne('App\Models\Kecamatan', 'id', 'id_kecamatan');
     }
 
     function kabupaten()
     {
-        return $this->hasOne('App\Models\Kabupaten', 'id_kabupaten', 'id');
+        return $this->hasOne('App\Models\Kabupaten', 'id', 'id_kabupaten');
     }
 
     function provinsi()
     {
-        return $this->hasOne('App\Models\Provinsi', 'id_provinsi', 'id');
+        return $this->hasOne('App\Models\Provinsi', 'id', 'id_provinsi');
     }
 
     function pemilik()
     {
-        return $this->hasOne('App\Models\Pemilik', 'id_pemilik', 'id');
+        return $this->hasOne('App\Models\Pemilik', 'id', 'id_pemilik');
     }
 
     function tipe()
     {
-        return $this->hasMany('App\Models\KostTipe', 'id', 'id_kost');
+        return $this->hasMany('App\Models\KostTipe', 'id_kost', 'id');
     }
 }

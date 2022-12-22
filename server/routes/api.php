@@ -11,6 +11,7 @@ use App\Http\Controllers\KostTipeController;
 use App\Http\Controllers\AlamatController;
 use App\Http\Controllers\PengontrakController;
 use App\Http\Controllers\KostFotoController;
+use App\Http\Controllers\PendaftaranController;
 
 /*
 |--------------------------------------------------------------------------
@@ -44,6 +45,8 @@ Route::group(['middleware' => 'api'], function($router) {
 
     // pengontrak
     Route::post('/pengontrak/home', [PengontrakController::class, 'home']);
+    Route::post('/pengontrak/kost-detail', [PengontrakController::class, 'detail']);
+    Route::post('/pengontrak/pendaftaran', [PengontrakController::class, 'pendaftaran']);
     
     Route::middleware(['auth'])->group(function () {
         Route::get('/logout', [AuthController::class, 'logout']);
@@ -81,5 +84,7 @@ Route::group(['middleware' => 'api'], function($router) {
         Route::post('/kost-foto', [KostFotoController::class, 'save']);
         Route::post('/kost-foto/{id}', [KostFotoController::class, 'update']);
         Route::delete('/kost-foto/{id}', [KostFotoController::class, 'delete']);
+        // pendaftaran
+        Route::post('/pendaftaran/terima', [PendaftaranController::class, 'terima']);
     });
 });

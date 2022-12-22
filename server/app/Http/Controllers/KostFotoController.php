@@ -28,7 +28,7 @@ class KostFotoController extends Controller
         }
         try {
             $imageName = 'kostfoto-'.time().$input['id_kost_jenis'].'.'.$request->foto->extension();  
-            $request->foto->move(public_path('images'), $imageName);
+            $request->foto->move('images', $imageName);
             $input['foto'] = url('images').'/'.$imageName;
             if($input['main_foto']==1){
                 KostFoto::where('id_kost_jenis', $input['id_kost_jenis'])->update(['main_foto'=>0]);
@@ -61,7 +61,7 @@ class KostFotoController extends Controller
             $kost_jenis = KostFoto::find($id);
             if($kost_jenis->id!=null){
                 $imageName = 'kostfoto-'.time().$input['id_kost_jenis'].'.'.$request->foto->extension();  
-                $request->foto->move(public_path('images'), $imageName);
+                $request->foto->move('images', $imageName);
                 $input['foto'] = url('images').'/'.$imageName;
 
                 if($input['main_foto']==1){

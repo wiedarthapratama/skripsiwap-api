@@ -3,7 +3,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Kost;
+// use App\Models\Kost;
+use App\Models\KostTipe;
+use App\Models\Pendaftaran;
+use DB;
+use Validator;
 
 class PengontrakController extends Controller
 {
@@ -17,10 +21,61 @@ class PengontrakController extends Controller
 
     function home(Request $request)
     {
-        $data = Kost::join('kost_tipe','kost_tipe.id_kost','kost.id');
-        $data = $data->offset(20 * $request->offset);
-        $data = $data->limit(20);
-        $data = $data->get();
+        $where = "WHERE";
+
+        if($request->nama != null){
+            if($where=="WHERE"){
+                $where .= " judul like '%".strtolower($request->nama)."%'";
+            }else{
+                $where .= " and judul like '%".strtolower($request->nama)."%'";
+            }
+        }
+
+        if($request->nama != null){
+            if($where=="WHERE"){
+                $where .= " k.id_provinsi = '".$request->id_provinsi."'";
+            }else{
+                $where .= " and k.id_provinsi = '".$request->id_provinsi."'";
+            }
+        }
+
+        if($request->nama != null){
+            if($where=="WHERE"){
+                $where .= " k.id_kabupaten = '".$request->id_kabupaten."'";
+            }else{
+                $where .= " and k.id_kabupaten = '".$request->id_kabupaten."'";
+            }
+        }
+
+        if($request->nama != null){
+            if($where=="WHERE"){
+                $where .= " k.id_kecamatan = '".$request->id_kecamatan."'";
+            }else{
+                $where .= " and k.id_kecamatan = '".$request->id_kecamatan."'";
+            }
+        }
+
+        if($request->nama != null){
+            if($where=="WHERE"){
+                $where .= " k.id_desa = '".$request->id_desa."'";
+            }else{
+                $where .= " and k.id_desa = '".$request->id_desa."'";
+            }
+        }
+
+        if($where=="WHERE"){
+            $where = "";
+        }
+
+        $data = DB::select(DB::raw("SELECT k.id as id_kost, kt.id as id_kost_tipe, concat(judul, ' - ', nama_tipe) as nama, harga_per_bulan, concat(alamat,', ',nama_desa,', ',nama_kecamatan,', ',nama_kabupaten,', ',nama_provinsi) as alamat, foto
+        FROM kost as k
+        JOIN kost_tipe as kt on k.id=kt.id_kost
+        JOIN kost_foto as kf on kf.id_kost_jenis=kt.id and kf.main_foto=1
+        JOIN provinsi as p on p.id=k.id_provinsi
+        JOIN kabupaten as k2 on k2.id=k.id_kabupaten
+        JOIN kecamatan as k3 on k3.id=k.id_kecamatan
+        JOIN desa as d on d.id=k.id_desa
+        $where"));
 
         $code = 200;
         $res['status'] = true;
@@ -31,17 +86,58 @@ class PengontrakController extends Controller
 
     function detail(Request $request)
     {
-        $data = Kost::join('kost_tipe','kost_tipe.id_kost','kost.id')
-            ->where('kost.id', $request->id_kost)
-            ->where('kost_tipe.id', $request->id_kost_tipe)
+        $data = KostTipe::with('kost','kost.provinsi','kost.kabupaten','kost.kecamatan','kost.desa','foto')
+            ->where('id', $request->id_kost_tipe)
             ->first();
-
-        $data->foto = KostFoto::where('id_kost_jenis', $request->id_kost_tipe);
 
         $code = 200;
         $res['status'] = true;
         $res['message'] = "Detail Kost";
         $res['data'] = $data;
         return response()->json($res, $code); 
+    }
+
+    function pendaftaran(Request $request)
+    {
+        $input = $request->all();
+        $input['id_user'] = $this->api->getUserLogin();
+
+        $input['tanggal_sewa'] = date('Y-m-d');
+        
+        $fotoKtp = $input['id_user'].'-'.time().'-fotoKtp.'.$request->foto_ktp->extension();  
+        $request->foto_ktp->move('images', $fotoKtp);
+        $input['foto_ktp'] = url('images').'/'.$fotoKtp;
+        $fotoPribadi = $input['id_user'].'-'.time().'-fotoPribadi.'.$request->foto_pribadi->extension();  
+        $request->foto_pribadi->move('images', $fotoPribadi);
+        $input['foto_pribadi'] = url('images').'/'.$fotoPribadi;
+        $fotoKk = $input['id_user'].'-'.time().'-fotoKk.'.$request->foto_kk->extension();  
+        $request->foto_kk->move('images', $fotoKk);
+        $input['foto_kk'] = url('images').'/'.$fotoKk;
+
+        $validator = Validator::make($input, [
+            'id_user' => 'required',
+            'id_kost' => 'required',
+            'id_kost_stok' => 'required',
+            'tanggal_sewa' => 'required',
+            'foto_ktp' => 'required',
+            'foto_pribadi' => 'required',
+            'foto_kk' => 'required',
+            'tanggal_mulai' => 'required'
+        ]);
+        if($validator->fails()) {
+            return response()->json($validator->errors(), 400);
+        }
+        try {
+            Pendaftaran::create($input);
+            $code = 200;
+            $res['status'] = true;
+            $res['message'] = "Pendaftaran berhasil diinput";
+        } catch (\Exception $e) {
+            $code = 500;
+            $res['status'] = false;
+            $res['message'] = "Pendaftaran gagal diinput";
+            $res['error'] = $e->getMessage();
+        }
+        return response()->json($res, $code);
     }
 }

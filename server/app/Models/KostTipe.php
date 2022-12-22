@@ -26,8 +26,13 @@ class KostTipe extends Model
         'nama_tipe'
     ];
 
-    // function user()
-    // {
-    //     return $this->hasOne('App\Models\User', 'id', 'id_user');
-    // }
+    function foto()
+    {
+        return $this->hasMany('App\Models\KostFoto', 'id_kost_jenis', 'id');
+    }
+
+    function kost()
+    {
+        return $this->belongsTo('App\Models\Kost', 'id_kost', 'id');
+    }
 }
