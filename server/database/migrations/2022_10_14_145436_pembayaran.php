@@ -23,6 +23,10 @@ class Pembayaran extends Migration
             $table->date('tanggal_bayar');
             $table->string('bukti_bayar');
             $table->string('status');
+            $table->string('nama_rekening');
+            $table->string('nama_bank');
+            $table->integer('to_id_bank');
+            $table->string('komentar');
             $table->timestamps();
 
             // $table->integer('id_user')->references('id')->on('users');

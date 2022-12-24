@@ -20,4 +20,14 @@ class Pengontrak extends Model
         'nomor_kost',
         'id_pendaftaran'
     ];
+
+    function kost_tipe()
+    {
+        return $this->hasOne('App\Models\KostTipe', 'id', 'id_kost_jenis');
+    }
+
+    function user()
+    {
+        return $this->hasOne('App\Models\User', 'id', 'id_user');
+    }
 }

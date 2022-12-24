@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-// use App\Models\Kost;
+use App\Models\Kost;
 use App\Models\KostTipe;
 use App\Models\Pendaftaran;
+use App\Models\Pengontrak;
+use App\Models\Pembayaran;
 use DB;
 use Validator;
 
@@ -139,5 +141,84 @@ class PengontrakController extends Controller
             $res['error'] = $e->getMessage();
         }
         return response()->json($res, $code);
+    }
+
+    function kost_saya(Request $request)
+    {
+        $data = Pengontrak::with('user','kost_tipe','kost_tipe.kost','kost_tipe.kost.provinsi','kost_tipe.kost.kabupaten','kost_tipe.kost.kecamatan','kost_tipe.kost.desa','kost_tipe.foto')
+            ->where('id_user', $this->api->getUserLogin())
+            ->first();
+
+        $data->list_pembayaran = Pembayaran::where('id_user', $this->api->getUserLogin())->get();
+
+        $code = 200;
+        $res['status'] = true;
+        $res['message'] = "Detail Kost Saya";
+        $res['data'] = $data;
+
+        return response()->json($res, $code); 
+    }
+
+    function submit_pembayaran(Request $request)
+    {
+        $input = $request->all();
+        $input['id_user'] = $this->api->getUserLogin();
+        $input['tanggal_bayar'] = date('Y-m-d');
+        $input['status'] = 'Menunggu Verifikasi';
+        $validator = Validator::make($input, [
+            'id_kost' => 'required',
+            'id_kost_stok' => 'required',
+            'jumlah_bayar' => 'required',
+            'nama_rekening' => 'required',
+            'nama_bank' => 'required',
+            'to_id_bank' => 'required'
+        ]);
+        if($validator->fails()) {
+            return response()->json($validator->errors(), 400);
+        }
+        try {
+            $kost = Kost::find($input['id_kost']);
+            $kost_tipe = KostTipe::find($input['id_kost_stok']);
+            $input['id_pemilik'] = $kost->id_pemilik;
+
+            $imageName = 'bukti_bayar-'.time().$input['id_user'].'.'.$request->bukti_bayar->extension();  
+            $request->bukti_bayar->move('images', $imageName);
+            $input['bukti_bayar'] = url('images').'/'.$imageName;
+
+            if($input['jumlah_bayar']<$kost_tipe->harga_per_bulan){
+                $code = 500;
+                $res['status'] = false;
+                $res['message'] = "Pembayaran tidak mencukupi";
+                $res['error'] = null;
+                return response()->json($res, $code);
+            }
+
+            Pembayaran::create($input);
+            $code = 200;
+            $res['status'] = true;
+            $res['message'] = "Pembayaran berhasil diinput";
+        } catch (\Exception $e) {
+            $code = 500;
+            $res['status'] = false;
+            $res['message'] = "Pembayaran gagal diinput";
+            $res['error'] = $e->getMessage();
+        }
+        return response()->json($res, $code);
+    }
+
+
+
+    function detail_pembayaran(Request $request)
+    {
+        $data = Pembayaran::with('user','pemilik','kost','kost_tipe','bank')
+            ->where('id_user', $this->api->getUserLogin())
+            ->first();
+
+        $code = 200;
+        $res['status'] = true;
+        $res['message'] = "Detail Pembayaran";
+        $res['data'] = $data;
+
+        return response()->json($res, $code); 
     }
 }

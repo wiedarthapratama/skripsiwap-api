@@ -12,6 +12,8 @@ use App\Http\Controllers\AlamatController;
 use App\Http\Controllers\PengontrakController;
 use App\Http\Controllers\KostFotoController;
 use App\Http\Controllers\PendaftaranController;
+use App\Http\Controllers\BankController;
+use App\Http\Controllers\PembayaranController;
 
 /*
 |--------------------------------------------------------------------------
@@ -46,7 +48,11 @@ Route::group(['middleware' => 'api'], function($router) {
     // pengontrak
     Route::post('/pengontrak/home', [PengontrakController::class, 'home']);
     Route::post('/pengontrak/kost-detail', [PengontrakController::class, 'detail']);
+    // ini harusnya login
     Route::post('/pengontrak/pendaftaran', [PengontrakController::class, 'pendaftaran']);
+    Route::get('/pengontrak/kost-saya', [PengontrakController::class, 'kost_saya']);
+    Route::post('/pengontrak/submit-pembayaran', [PengontrakController::class, 'submit_pembayaran']);
+    Route::get('/pengontrak/pembayaran/detail/{id}', [PengontrakController::class, 'detail_pembayaran']);
     
     Route::middleware(['auth'])->group(function () {
         Route::get('/logout', [AuthController::class, 'logout']);
@@ -86,5 +92,17 @@ Route::group(['middleware' => 'api'], function($router) {
         Route::delete('/kost-foto/{id}', [KostFotoController::class, 'delete']);
         // pendaftaran
         Route::post('/pendaftaran/terima', [PendaftaranController::class, 'terima']);
+        // bank
+        Route::get('/bank', [BankController::class, 'all']);
+        Route::post('/bank', [BankController::class, 'save']);
+        Route::get('/bank/{id}', [BankController::class, 'get']);
+        Route::post('/bank/{id}', [BankController::class, 'update']);
+        Route::delete('/bank/{id}', [BankController::class, 'delete']);
+        Route::get('/bank/id-pemilik/{id}', [BankController::class, 'getByIdPemilik']);
+        // pembayaran
+        Route::get('/pembayaran', [PembayaranController::class, 'all']);
+        Route::get('/pembayaran/{id}', [PembayaranController::class, 'get']);
+        Route::get('/pembayaran/terima/{id}', [PembayaranController::class, 'terima']);
+        Route::post('/pembayaran/tolak/{id}', [PembayaranController::class, 'tolak']);
     });
 });
