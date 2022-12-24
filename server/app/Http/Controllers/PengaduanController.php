@@ -4,9 +4,10 @@ namespace App\Http\Controllers;
 
 use Validator;
 use Illuminate\Http\Request;
-use App\Models\Pembayaran;
+use App\Models\Pengaduan;
+use App\Models\Pengerjaan;
 
-class PembayaranController extends Controller
+class PengaduanController extends Controller
 {
     private $api;
 
@@ -19,16 +20,16 @@ class PembayaranController extends Controller
     {
         try {
             $id_pemilik = $this->api->getPemilikLogin();
-            $data = Pembayaran::where('id_pemilik', $id_pemilik)
+            $data = Pengaduan::where('id_pemilik', $id_pemilik)
                 ->get();
             $code = 200;
             $res['status'] = true;
-            $res['message'] = "Pembayaran berhasil ditampilkan";
+            $res['message'] = "Pengaduan berhasil ditampilkan";
             $res['data'] = $data;
         } catch (\Exception $e) {
             $code = 500;
             $res['status'] = false;
-            $res['message'] = "Pembayaran gagal ditampilkan";
+            $res['message'] = "Pengaduan gagal ditampilkan";
             $res['error'] = $e->getMessage();
         }
         return response()->json($res, $code);   
@@ -38,60 +39,49 @@ class PembayaranController extends Controller
     {
         try {
             $id_pemilik = $this->api->getPemilikLogin();
-            $data = Pembayaran::with('user','pemilik','kost','kost_tipe','bank')
+            $data = Pengaduan::with('user','pemilik','kost','kost_tipe','pengerjaan')
                 ->where('id', $id)
                 ->where('id_pemilik', $id_pemilik)
                 ->first();
             $code = 200;
             $res['status'] = true;
-            $res['message'] = "Pembayaran berhasil ditampilkan";
+            $res['message'] = "Pengaduan berhasil ditampilkan";
             $res['data'] = $data;
         } catch (\Exception $e) {
             $code = 500;
             $res['status'] = false;
-            $res['message'] = "Pembayaran gagal ditampilkan";
+            $res['message'] = "Pengaduan gagal ditampilkan";
             $res['error'] = $e->getMessage();
         }
         return response()->json($res, $code);   
     }
 
-    function terima($id)
-    {
-        try {
-            $id_pemilik = $this->api->getPemilikLogin();
-            $data = Pembayaran::find($id)->update(['status'=>'Pembayaran Diterima']);
-            $code = 200;
-            $res['status'] = true;
-            $res['message'] = "Pembayaran berhasil diterima";
-            $res['data'] = $data;
-        } catch (\Exception $e) {
-            $code = 500;
-            $res['status'] = false;
-            $res['message'] = "Pembayaran gagal diterima";
-            $res['error'] = $e->getMessage();
-        }
-        return response()->json($res, $code);   
-    }
-
-    function tolak($id, Request $request)
+    function kirim_pekerja($id, Request $request)
     {
         $input = $request->all();
         $validator = Validator::make($input, [
-            'komentar' => 'required'
+            'id_pekerja' => 'required',
+            'durasi_pengerjaan' => 'required',
         ]);
         if($validator->fails()) {
             return response()->json($validator->errors(), 400);
         }
         try {
-            $pembayaran = Pembayaran::find($id);
-            $pembayaran->update(['komentar'=>$input['komentar'],'status'=>'Pembayaran Ditolak']);
+            $pembayaran = Pengaduan::find($id);
+            $pembayaran->update(['status'=>'Pengaduan Diterima']);
+            Pengerjaan::create([
+                'id_pengaduan' => $id,
+                'id_pekerja' => $input['id_pekerja'],
+                'durasi_pengerjaan' => $input['durasi_pengerjaan'],
+                'status' => 'Pengaduan Diterima'
+            ]);
             $code = 200;
             $res['status'] = true;
-            $res['message'] = "Tolak Pembayaran berhasil";
+            $res['message'] = "Kirim Pekerja berhasil";
         } catch (\Exception $e) {
             $code = 500;
             $res['status'] = false;
-            $res['message'] = "Tolak Pembayaran gagal";
+            $res['message'] = "Kirim Pekerja gagal";
             $res['error'] = $e->getMessage();
         }
         return response()->json($res, $code);

@@ -8,6 +8,7 @@ use App\Models\KostTipe;
 use App\Models\Pendaftaran;
 use App\Models\Pengontrak;
 use App\Models\Pembayaran;
+use App\Models\Pengaduan;
 use DB;
 use Validator;
 
@@ -19,6 +20,47 @@ class PengontrakController extends Controller
     public function __construct()
     {
         $this->api = new ApiController();
+    }
+
+    function all()
+    {
+        try {
+            $id_pemilik = $this->api->getPemilikLogin();
+            $data = DB::select(DB::raw("SELECT s.id as id_user, kt.id as id_kost_jenis, s.name, k.judul, kt.nama_tipe, p.tanggal_masuk
+            FROM pengontrak as p
+            JOIN kost_tipe as kt on p.id_kost_jenis=kt.id
+            JOIN kost as k on kt.id_kost=k.id
+            JOIN users as s on k.id_pemilik=s.id
+            WHERE k.id_pemilik = '".$id_pemilik."'"));
+            $code = 200;
+            $res['status'] = true;
+            $res['message'] = "Pengontrak berhasil ditampilkan";
+            $res['data'] = $data;
+        } catch (\Exception $e) {
+            $code = 500;
+            $res['status'] = false;
+            $res['message'] = "Pengontrak gagal ditampilkan";
+            $res['error'] = $e->getMessage();
+        }
+        return response()->json($res, $code);   
+    }
+
+    function getByKostTipeAndUser(Request $request)
+    {
+        $data = Pengontrak::with('user','kost_tipe','kost_tipe.kost','kost_tipe.kost.provinsi','kost_tipe.kost.kabupaten','kost_tipe.kost.kecamatan','kost_tipe.kost.desa','kost_tipe.foto')
+            ->where('id_kost_jenis', $request->id_kost_jenis)
+            ->where('id_user', $request->id_user)
+            ->first();
+
+        $data->list_pembayaran = Pembayaran::where('id_user', $request->id_user)->get();
+        $data->list_pengaduan = Pengaduan::where('id_user', $request->id_user)->get();
+
+        $code = 200;
+        $res['status'] = true;
+        $res['message'] = "Detail Kost Saya";
+        $res['data'] = $data;
+
+        return response()->json($res, $code); 
     }
 
     function home(Request $request)
@@ -150,6 +192,7 @@ class PengontrakController extends Controller
             ->first();
 
         $data->list_pembayaran = Pembayaran::where('id_user', $this->api->getUserLogin())->get();
+        $data->list_pengaduan = Pengaduan::where('id_user', $this->api->getUserLogin())->get();
 
         $code = 200;
         $res['status'] = true;
@@ -217,6 +260,59 @@ class PengontrakController extends Controller
         $code = 200;
         $res['status'] = true;
         $res['message'] = "Detail Pembayaran";
+        $res['data'] = $data;
+
+        return response()->json($res, $code); 
+    }
+
+    function submit_pengaduan(Request $request)
+    {
+        $input = $request->all();
+        $input['id_user'] = $this->api->getUserLogin();
+        $input['tanggal'] = date('Y-m-d');
+        $input['status'] = 'Menunggu Verifikasi';
+        $validator = Validator::make($input, [
+            'id_kost' => 'required',
+            'id_kost_stok' => 'required',
+            'judul' => 'required',
+            'deskripsi' => 'required'
+        ]);
+        if($validator->fails()) {
+            return response()->json($validator->errors(), 400);
+        }
+        try {
+            $kost = Kost::find($input['id_kost']);
+            $kost_tipe = KostTipe::find($input['id_kost_stok']);
+            $input['id_pemilik'] = $kost->id_pemilik;
+
+            $imageName = 'foto_pengaduan-'.time().$input['id_user'].'.'.$request->foto_pengaduan->extension();  
+            $request->foto_pengaduan->move('images', $imageName);
+            $input['foto_pengaduan'] = url('images').'/'.$imageName;
+
+            Pengaduan::create($input);
+            $code = 200;
+            $res['status'] = true;
+            $res['message'] = "Pengaduan berhasil diinput";
+        } catch (\Exception $e) {
+            $code = 500;
+            $res['status'] = false;
+            $res['message'] = "Pengaduan gagal diinput";
+            $res['error'] = $e->getMessage();
+        }
+        return response()->json($res, $code);
+    }
+
+
+
+    function detail_pengaduan(Request $request)
+    {
+        $data = Pengaduan::with('user','pemilik','kost','kost_tipe','pengerjaan')
+            ->where('id_user', $this->api->getUserLogin())
+            ->first();
+
+        $code = 200;
+        $res['status'] = true;
+        $res['message'] = "Detail Pengaduan ";
         $res['data'] = $data;
 
         return response()->json($res, $code); 

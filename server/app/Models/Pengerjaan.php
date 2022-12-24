@@ -15,7 +15,8 @@ class Pengerjaan extends Model
     protected $fillable = [
         'id_pengaduan',
         'id_pekerja',
-        'status'
+        'status',
+        'durasi_pengerjaan'
     ];
 
     function pengaduan()

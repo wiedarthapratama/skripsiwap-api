@@ -16,19 +16,58 @@ class PendaftaranController extends Controller
         $this->api = new ApiController();
     }
 
-    function terima(Request $request)
+    function all()
+    {
+        try {
+            $id_pemilik = $this->api->getPemilikLogin();
+            $data = Pendaftaran::where('id_pemilik', $id_pemilik)
+                ->get();
+            $code = 200;
+            $res['status'] = true;
+            $res['message'] = "Pendaftaran berhasil ditampilkan";
+            $res['data'] = $data;
+        } catch (\Exception $e) {
+            $code = 500;
+            $res['status'] = false;
+            $res['message'] = "Pendaftaran gagal ditampilkan";
+            $res['error'] = $e->getMessage();
+        }
+        return response()->json($res, $code);   
+    }
+
+    function get($id)
+    {
+        try {
+            $id_pemilik = $this->api->getPemilikLogin();
+            $data = Pendaftaran::with('user','pemilik','kost','kost_tipe')
+                ->where('id', $id)
+                ->where('id_pemilik', $id_pemilik)
+                ->first();
+            $code = 200;
+            $res['status'] = true;
+            $res['message'] = "Pendaftaran berhasil ditampilkan";
+            $res['data'] = $data;
+        } catch (\Exception $e) {
+            $code = 500;
+            $res['status'] = false;
+            $res['message'] = "Pendaftaran gagal ditampilkan";
+            $res['error'] = $e->getMessage();
+        }
+        return response()->json($res, $code);   
+    }
+
+    function terima($id, Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'id_pendaftaran' => 'required',
             'nomor_kost' => 'required'
         ]);
         if($validator->fails()) {
             return response()->json($validator->errors(), 400);
         }
         try {
-            $pendaftaran = Pendaftaran::find($request->id_pendaftaran);
+            $pendaftaran = Pendaftaran::find($id);
             Pengontrak::create([
-                'id_pendaftaran' => $request->id_pendaftaran,
+                'id_pendaftaran' => $id,
                 'nomor_kost' => $request->nomor_kost,
                 'id_kost_jenis' => $pendaftaran->id_kost_stok,
                 'id_user' => $pendaftaran->id_user,

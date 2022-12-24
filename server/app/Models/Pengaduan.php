@@ -20,26 +20,32 @@ class Pengaduan extends Model
         'judul',
         'deskripsi',
         'status',
-        'tanggal'
+        'tanggal',
+        'foto_pengaduan'
     ];
 
     function user()
     {
-        return $this->hasOne('App\Models\User', 'id_user', 'id');
+        return $this->hasOne('App\Models\User', 'id', 'id_user');
     }
 
     function pemilik()
     {
-        return $this->hasOne('App\Models\Pemilik', 'id_pemilik', 'id');
+        return $this->hasOne('App\Models\Pemilik', 'id', 'id_pemilik');
     }
 
     function kost()
     {
-        return $this->hasOne('App\Models\Kost', 'id_kost', 'id');
+        return $this->hasOne('App\Models\Kost', 'id', 'id_kost');
     }
 
-    function kost_stok()
+    function kost_tipe()
     {
-        return $this->hasOne('App\Models\KostStok', 'id_kost_stok', 'id');
+        return $this->hasOne('App\Models\KostTipe', 'id', 'id_kost_stok');
+    }
+
+    function pengerjaan()
+    {
+        return $this->hasOne('App\Models\Pengerjaan', 'id_pengaduan', 'id');
     }
 }

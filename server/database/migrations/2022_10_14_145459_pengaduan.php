@@ -22,6 +22,7 @@ class Pengaduan extends Migration
             $table->string('judul');
             $table->text('deskripsi');
             $table->string('status');
+            $table->string('foto_pengaduan');
             $table->date('tanggal');
             $table->timestamps();
 

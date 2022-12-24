@@ -18,6 +18,7 @@ class Pengerjaan extends Migration
             $table->integer('id_pengaduan');
             $table->integer('id_pekerja');
             $table->string('status');
+            $table->string('durasi_pengerjaan');
             $table->timestamps();
 
             // $table->foreign('id_pengaduan')->references('id')->on('pengaduan');
