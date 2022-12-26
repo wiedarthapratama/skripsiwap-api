@@ -30,7 +30,7 @@ use App\Http\Controllers\PengaduanController;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
-Route::group(['middleware' => 'api'], function($router) {
+Route::group(['middleware' => ['api','apikey']], function($router) {
     Route::post('/register', [AuthController::class, 'register']);
     Route::post('/login', [AuthController::class, 'login']);
         
