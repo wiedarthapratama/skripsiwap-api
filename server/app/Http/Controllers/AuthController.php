@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Auth;
 use Validator;
 use App\Models\User;
+use App\Models\Pemilik;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
@@ -107,7 +108,9 @@ class AuthController extends Controller
      */
     public function profile()
     {
-        return response()->json(auth()->user());
+        $user = auth()->user();
+        $user->is_pemilik = Pemilik::where('id_user',$user->id)->first()->id != null ? true : false;
+        return response()->json($user);
     }
 
     /**
