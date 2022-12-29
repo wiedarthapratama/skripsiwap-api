@@ -80,7 +80,9 @@ class PembayaranController extends Controller
             'komentar' => 'required'
         ]);
         if($validator->fails()) {
-            return response()->json($validator->errors(), 400);
+            $res['status'] = false;
+            $res['message'] = $validator->errors()->first();
+            return response()->json($res, 400);
         }
         try {
             $pembayaran = Pembayaran::find($id);

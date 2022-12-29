@@ -22,7 +22,9 @@ class ProfileController extends Controller
             ]);
     
             if($validator->fails()) {
-                return response()->json($validator->errors(), 400);
+                $res['status'] = false;
+                $res['message'] = $validator->errors()->first();
+                return response()->json($res, 400);
             }
     
             User::find($input['id_user'])->update($input);
@@ -52,7 +54,9 @@ class ProfileController extends Controller
             ]);
     
             if($validator->fails()) {
-                return response()->json($validator->errors(), 400);
+                $res['status'] = false;
+                $res['message'] = $validator->errors()->first();
+                return response()->json($res, 400);
             }
 
             if(auth()->attempt($validator->validated())){

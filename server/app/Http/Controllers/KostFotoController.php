@@ -24,7 +24,9 @@ class KostFotoController extends Controller
             'foto' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
         if($validator->fails()) {
-            return response()->json($validator->errors(), 400);
+            $res['status'] = false;
+            $res['message'] = $validator->errors()->first();
+            return response()->json($res, 400);
         }
         try {
             $imageName = 'kostfoto-'.time().$input['id_kost_jenis'].'.'.$request->foto->extension();  
@@ -55,7 +57,9 @@ class KostFotoController extends Controller
             'foto' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
         if($validator->fails()) {
-            return response()->json($validator->errors(), 400);
+            $res['status'] = false;
+            $res['message'] = $validator->errors()->first();
+            return response()->json($res, 400);
         }
         try {
             $kost_jenis = KostFoto::find($id);

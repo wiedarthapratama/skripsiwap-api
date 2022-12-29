@@ -65,7 +65,9 @@ class KostJenisController extends Controller
             'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
         if($validator->fails()) {
-            return response()->json($validator->errors(), 400);
+            $res['status'] = false;
+            $res['message'] = $validator->errors()->first();
+            return response()->json($res, 400);
         }
         try {
             $imageName = $input['id_user'].'-'.time().'.'.$request->image->extension();  
@@ -94,7 +96,9 @@ class KostJenisController extends Controller
             'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
         if($validator->fails()) {
-            return response()->json($validator->errors(), 400);
+            $res['status'] = false;
+            $res['message'] = $validator->errors()->first();
+            return response()->json($res, 400);
         }
         try {
             $kost_jenis = KostJenis::find($id);

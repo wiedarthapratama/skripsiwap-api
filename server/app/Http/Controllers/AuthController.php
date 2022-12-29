@@ -35,7 +35,9 @@ class AuthController extends Controller
         ]);
 
         if($validator->fails()) {
-            return response()->json($validator->errors(), 400);
+            $res['status'] = false;
+            $res['message'] = $validator->errors()->first();
+            return response()->json($res, 400);
         }
 
         $user = User::create([
@@ -64,7 +66,9 @@ class AuthController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return response()->json($validator->errors(), 422);
+            $res['status'] = false;
+            $res['message'] = $validator->errors()->first();
+            return response()->json($res, 422);
         }
 
         if (!$token = auth()->attempt($validator->validated())) {

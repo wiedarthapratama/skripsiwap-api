@@ -49,7 +49,9 @@ class PemilikController extends Controller
             'alamat' => 'required',
         ]);
         if($validator->fails()) {
-            return response()->json($validator->errors(), 400);
+            $res['status'] = false;
+            $res['message'] = $validator->errors()->first();
+            return response()->json($res, 400);
         }
         try {
             Pemilik::create($input);
@@ -78,7 +80,9 @@ class PemilikController extends Controller
             'alamat' => 'required',
         ]);
         if($validator->fails()) {
-            return response()->json($validator->errors(), 400);
+            $res['status'] = false;
+            $res['message'] = $validator->errors()->first();
+            return response()->json($res, 400);
         }
         try {
             $pemilik = Pemilik::find($id);

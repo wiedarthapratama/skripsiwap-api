@@ -63,7 +63,9 @@ class KostTipeController extends Controller
             'nama_tipe' => 'required'
         ]);
         if($validator->fails()) {
-            return response()->json($validator->errors(), 400);
+            $res['status'] = false;
+            $res['message'] = $validator->errors()->first();
+            return response()->json($res, 400);
         }
         try {
             KostTipe::create($input);
@@ -91,7 +93,9 @@ class KostTipeController extends Controller
             'nama_tipe' => 'required'
         ]);
         if($validator->fails()) {
-            return response()->json($validator->errors(), 400);
+            $res['status'] = false;
+            $res['message'] = $validator->errors()->first();
+            return response()->json($res, 400);
         }
         try {
             $kost = KostTipe::find($id);

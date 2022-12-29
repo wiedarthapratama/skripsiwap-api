@@ -68,7 +68,9 @@ class KostController extends Controller
             'alamat' => 'required'
         ]);
         if($validator->fails()) {
-            return response()->json($validator->errors(), 400);
+            $res['status'] = false;
+            $res['message'] = $validator->errors()->first();
+            return response()->json($res, 400);
         }
         try {
             Kost::create($input);
@@ -98,7 +100,9 @@ class KostController extends Controller
             'alamat' => 'required'
         ]);
         if($validator->fails()) {
-            return response()->json($validator->errors(), 400);
+            $res['status'] = false;
+            $res['message'] = $validator->errors()->first();
+            return response()->json($res, 400);
         }
         try {
             $kost = Kost::find($id);

@@ -71,7 +71,9 @@ class PekerjaController extends Controller
             'alamat' => 'required',
         ]);
         if($validator->fails()) {
-            return response()->json($validator->errors(), 400);
+            $res['status'] = false;
+            $res['message'] = $validator->errors()->first();
+            return response()->json($res, 400);
         }
         try {
             Pekerja::create($input);
@@ -102,7 +104,9 @@ class PekerjaController extends Controller
             'alamat' => 'required',
         ]);
         if($validator->fails()) {
-            return response()->json($validator->errors(), 400);
+            $res['status'] = false;
+            $res['message'] = $validator->errors()->first();
+            return response()->json($res, 400);
         }
         try {
             $pekerja = Pekerja::find($id);

@@ -64,7 +64,9 @@ class PengaduanController extends Controller
             'durasi_pengerjaan' => 'required',
         ]);
         if($validator->fails()) {
-            return response()->json($validator->errors(), 400);
+            $res['status'] = false;
+            $res['message'] = $validator->errors()->first();
+            return response()->json($res, 400);
         }
         try {
             $pembayaran = Pengaduan::find($id);

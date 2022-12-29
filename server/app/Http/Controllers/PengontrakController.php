@@ -169,7 +169,9 @@ class PengontrakController extends Controller
             'tanggal_mulai' => 'required'
         ]);
         if($validator->fails()) {
-            return response()->json($validator->errors(), 400);
+            $res['status'] = false;
+            $res['message'] = $validator->errors()->first();
+            return response()->json($res, 400);
         }
         try {
             Pendaftaran::create($input);
@@ -217,7 +219,9 @@ class PengontrakController extends Controller
             'to_id_bank' => 'required'
         ]);
         if($validator->fails()) {
-            return response()->json($validator->errors(), 400);
+            $res['status'] = false;
+            $res['message'] = $validator->errors()->first();
+            return response()->json($res, 400);
         }
         try {
             $kost = Kost::find($input['id_kost']);
@@ -278,7 +282,9 @@ class PengontrakController extends Controller
             'deskripsi' => 'required'
         ]);
         if($validator->fails()) {
-            return response()->json($validator->errors(), 400);
+            $res['status'] = false;
+            $res['message'] = $validator->errors()->first();
+            return response()->json($res, 400);
         }
         try {
             $kost = Kost::find($input['id_kost']);
