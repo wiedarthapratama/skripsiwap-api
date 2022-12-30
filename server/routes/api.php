@@ -15,6 +15,7 @@ use App\Http\Controllers\PendaftaranController;
 use App\Http\Controllers\BankController;
 use App\Http\Controllers\PembayaranController;
 use App\Http\Controllers\PengaduanController;
+use App\Http\Controllers\FirebaseController;
 
 /*
 |--------------------------------------------------------------------------
@@ -118,4 +119,6 @@ Route::group(['middleware' => ['api','apikey']], function($router) {
         Route::get('/pengontrak', [PengontrakController::class, 'all']);
         Route::post('/pengontrak/get-by-kosttipe-and-user', [PengontrakController::class, 'getByKostTipeAndUser']);
     });
+
+    Route::get('/firebase/test', [FirebaseController::class, 'test']);
 });
