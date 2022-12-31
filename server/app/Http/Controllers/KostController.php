@@ -38,7 +38,8 @@ class KostController extends Controller
     {
         try {
             $id_pemilik = $this->api->getPemilikLogin();
-            $data = Kost::where('id', $id)
+            $data = Kost::with('desa','kecamatan','kabupaten','provinsi','pemilik','tipe')
+                ->where('id', $id)
                 ->where('id_pemilik', $id_pemilik)
                 ->first();
             $code = 200;
