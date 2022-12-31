@@ -30,6 +30,7 @@ class Kost extends Migration
             $table->string('alamat');
             $table->string('lat');
             $table->string('long');
+            $table->string('link_maps');
             // $table->integer('id_kost_jenis');
             $table->timestamps();
 

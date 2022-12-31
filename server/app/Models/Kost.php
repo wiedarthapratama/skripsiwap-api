@@ -22,7 +22,8 @@ class Kost extends Model
         'id_desa',
         'alamat',
         'lat',
-        'long'
+        'long',
+        'link_maps'
     ];
 
     function desa()
