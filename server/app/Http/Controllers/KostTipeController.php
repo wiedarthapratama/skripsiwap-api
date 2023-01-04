@@ -36,7 +36,8 @@ class KostTipeController extends Controller
     function get($id)
     {
         try {
-            $data = KostTipe::where('id', $id)
+            $data = KostTipe::with('foto')
+                ->where('id', $id)
                 ->first();
             $code = 200;
             $res['status'] = true;
