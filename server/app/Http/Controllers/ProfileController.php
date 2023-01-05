@@ -4,11 +4,20 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Pemilik;
+use App\Models\User;
 use Validator;
 use Auth;
+use Illuminate\Support\Facades\Hash;
 
 class ProfileController extends Controller
 {
+    private $api;
+
+    public function __construct()
+    {
+        $this->api = new ApiController();
+    }
+
     public function update(Request $request)
     {
         try {
@@ -59,16 +68,26 @@ class ProfileController extends Controller
                 return response()->json($res, 400);
             }
 
-            if(auth()->attempt($validator->validated())){
-                
+            if($input['password_baru']!=$input['password_konfirmasi']){
+                $code = 400;
+                $res['status'] = false;
+                $res['message'] = "password baru dan konfirmasi password tidak sesuai";
+            }else{
+                $user = User::find($input['id_user']);
+                if (Hash::check($input['password_lama'], $user->password)) {
+                    $user->update([
+                        'password'=>Hash::make($input['password_baru'])
+                    ]);
+            
+                    $code = 200;
+                    $res['status'] = true;
+                    $res['message'] = "Profil berhasil diupdate";
+                }else{
+                    $code = 400;
+                    $res['status'] = false;
+                    $res['message'] = "password tidak sesuai";
+                }
             }
-    
-            User::find($input['id_user'])->update($input);
-    
-            $code = 200;
-            $res['status'] = true;
-            $res['message'] = "Profil berhasil diupdate";
-            $res['data'] = $data;
         } catch (\Exception $e) {
             $code = 500;
             $res['status'] = false;

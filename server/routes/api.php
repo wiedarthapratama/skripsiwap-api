@@ -16,6 +16,7 @@ use App\Http\Controllers\BankController;
 use App\Http\Controllers\PembayaranController;
 use App\Http\Controllers\PengaduanController;
 use App\Http\Controllers\FirebaseController;
+use App\Http\Controllers\ProfileController;
 
 /*
 |--------------------------------------------------------------------------
@@ -63,6 +64,8 @@ Route::group(['middleware' => ['api','apikey']], function($router) {
         Route::get('/logout', [AuthController::class, 'logout']);
         Route::get('/refresh', [AuthController::class, 'refresh']);
         Route::get('/profile', [AuthController::class, 'profile']);
+        Route::post('/profile/update', [ProfileController::class, 'update']);
+        Route::post('/profile/password', [ProfileController::class, 'password']);
         // pemilik
         Route::post('/pemilik', [PemilikController::class, 'save']);
         Route::get('/pemilik/{id}', [PemilikController::class, 'get']);
