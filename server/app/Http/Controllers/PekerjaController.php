@@ -39,7 +39,7 @@ class PekerjaController extends Controller
     {
         try {
             $id_user = $this->api->getUserLogin();
-            $data = Pekerja::with('user')
+            $data = Pekerja::with('desa','kecamatan','kabupaten','provinsi','user')
                 ->where('id', $id)
                 ->where('id_user', $id_user)
                 ->first();
@@ -63,7 +63,7 @@ class PekerjaController extends Controller
         $validator = Validator::make($input, [
             'nama' => 'required',
             'nohp' => 'required',
-            'id_user' => 'required|unique:pekerja',
+            'id_user' => 'required',
             'id_provinsi' => 'required',
             'id_kabupaten' => 'required',
             'id_kecamatan' => 'required',
@@ -96,7 +96,7 @@ class PekerjaController extends Controller
         $validator = Validator::make($input, [
             'nama' => 'required',
             'nohp' => 'required',
-            'id_user' => 'required|unique:pekerja,id_user,'.$input['id_user'],
+            'id_user' => 'required',
             'id_provinsi' => 'required',
             'id_kabupaten' => 'required',
             'id_kecamatan' => 'required',

@@ -25,22 +25,22 @@ class Pekerja extends Model
 
     function provinsi()
     {
-        return $this->hasOne('App\Models\Provinsi', 'id_provinsi', 'id');
+        return $this->hasOne('App\Models\Provinsi', 'id', 'id_provinsi');
     }
 
     function kabupaten()
     {
-        return $this->hasOne('App\Models\Kabupaten', 'id_kabupaten', 'id');
+        return $this->hasOne('App\Models\Kabupaten', 'id', 'id_kabupaten');
     }
 
     function kecamatan()
     {
-        return $this->hasOne('App\Models\Kecamatan', 'id_kecamatan', 'id');
+        return $this->hasOne('App\Models\Kecamatan', 'id', 'id_kecamatan');
     }
 
     function desa()
     {
-        return $this->hasOne('App\Models\Desa', 'id_desa', 'id');
+        return $this->hasOne('App\Models\Desa', 'id', 'id_desa');
     }
 
     function user()
