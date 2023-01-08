@@ -174,6 +174,9 @@ class PengontrakController extends Controller
             return response()->json($res, 400);
         }
         try {
+            $kost = Kost::find($input['id_kost']);
+            $input['id_pemilik'] = $kost->id_pemilik;
+            
             Pendaftaran::create($input);
             $code = 200;
             $res['status'] = true;
