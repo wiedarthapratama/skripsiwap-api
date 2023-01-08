@@ -30,7 +30,8 @@ class PengontrakController extends Controller
             FROM pengontrak as p
             JOIN kost_tipe as kt on p.id_kost_jenis=kt.id
             JOIN kost as k on kt.id_kost=k.id
-            JOIN users as s on k.id_pemilik=s.id
+            JOIN pemilik as pe on k.id_pemilik=pe.id
+            JOIN users as s on pe.id_user=s.id
             WHERE k.id_pemilik = '".$id_pemilik."'"));
             $code = 200;
             $res['status'] = true;

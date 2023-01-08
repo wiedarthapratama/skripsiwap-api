@@ -20,7 +20,8 @@ class PendaftaranController extends Controller
     {
         try {
             $id_pemilik = $this->api->getPemilikLogin();
-            $data = Pendaftaran::where('id_pemilik', $id_pemilik)
+            $data = Pendaftaran::with('user','pemilik','pemilik.user','kost','kost_tipe')
+                ->where('id_pemilik', $id_pemilik)
                 ->get();
             $code = 200;
             $res['status'] = true;
