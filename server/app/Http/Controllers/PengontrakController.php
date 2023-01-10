@@ -26,7 +26,7 @@ class PengontrakController extends Controller
     {
         try {
             $id_pemilik = $this->api->getPemilikLogin();
-            $data = DB::select(DB::raw("SELECT s.id as id_user, kt.id as id_kost_jenis, s.name, k.judul, kt.nama_tipe, p.tanggal_masuk
+            $data = DB::select(DB::raw("SELECT p.id_user as id_user, kt.id as id_kost_jenis, s.name, k.judul, kt.nama_tipe, p.tanggal_masuk
             FROM pengontrak as p
             JOIN kost_tipe as kt on p.id_kost_jenis=kt.id
             JOIN kost as k on kt.id_kost=k.id
@@ -49,12 +49,14 @@ class PengontrakController extends Controller
     function getByKostTipeAndUser(Request $request)
     {
         $data = Pengontrak::with('user','kost_tipe','kost_tipe.kost','kost_tipe.kost.provinsi','kost_tipe.kost.kabupaten','kost_tipe.kost.kecamatan','kost_tipe.kost.desa','kost_tipe.foto')
-            ->where('id_kost_jenis', $request->id_kost_jenis)
+            // ->where('id_kost_jenis', $request->id_kost_jenis)
             ->where('id_user', $request->id_user)
             ->first();
 
-        $data->list_pembayaran = Pembayaran::where('id_user', $request->id_user)->get();
-        $data->list_pengaduan = Pengaduan::where('id_user', $request->id_user)->get();
+        if(!empty($data->id)){
+            $data->list_pembayaran = Pembayaran::where('id_user', $request->id_user)->get();
+            $data->list_pengaduan = Pengaduan::where('id_user', $request->id_user)->get();
+        }
 
         $code = 200;
         $res['status'] = true;

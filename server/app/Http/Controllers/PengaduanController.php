@@ -20,7 +20,8 @@ class PengaduanController extends Controller
     {
         try {
             $id_pemilik = $this->api->getPemilikLogin();
-            $data = Pengaduan::where('id_pemilik', $id_pemilik)
+            $data = Pengaduan::with('user')
+                ->where('id_pemilik', $id_pemilik)
                 ->get();
             $code = 200;
             $res['status'] = true;
