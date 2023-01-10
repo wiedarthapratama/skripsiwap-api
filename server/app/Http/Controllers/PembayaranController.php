@@ -19,7 +19,8 @@ class PembayaranController extends Controller
     {
         try {
             $id_pemilik = $this->api->getPemilikLogin();
-            $data = Pembayaran::where('id_pemilik', $id_pemilik)
+            $data = Pembayaran::with('user','pemilik','kost','kost_tipe','bank')
+                ->where('id_pemilik', $id_pemilik)
                 ->get();
             $code = 200;
             $res['status'] = true;
