@@ -121,6 +121,8 @@ Route::group(['middleware' => ['api','apikey']], function($router) {
         // pengontrak
         Route::get('/pengontrak', [PengontrakController::class, 'all']);
         Route::post('/pengontrak/get-by-kosttipe-and-user', [PengontrakController::class, 'getByKostTipeAndUser']);
+
+        Route::post('/firebase/create-or-update-token', [FirebaseController::class, 'saveOrUpdateToken']);
     });
 
     Route::get('/firebase/test', [FirebaseController::class, 'test']);
