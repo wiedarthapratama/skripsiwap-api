@@ -23,7 +23,8 @@ class Pembayaran extends Model
         'status',
         'nama_rekening',
         'nama_bank',
-        'to_id_bank'
+        'to_id_bank',
+        'komentar'
     ];
 
     function user()
