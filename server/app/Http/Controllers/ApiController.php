@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Pemilik;
+use App\Models\Notifikasi;
+use App\Models\UsersFcm;
 
 class ApiController extends Controller
 {
@@ -99,5 +101,25 @@ class ApiController extends Controller
         }
 
         return json_encode($res, true);
+    }
+
+    function insert_notifikasi($id_user, $judul, $deskripsi)
+    {
+        return Notifikasi::create([
+            'id_user'=>$id_user,
+            'judul'=>$judul,
+            'deskripsi'=>$deskripsi,
+            'tgl'=>date('Y-m-d H:i:s')
+        ]);
+    }
+
+    function getUsersFcmToken($id_users)
+    {
+        $usersFcm = UsersFrm::where('id_user', $pemilik->id_user)->get();
+        $token = [];
+        foreach ($usersFcm as $uF) {
+            $token[] = $uF->fcm_token;
+        }
+        return $token;
     }
 }

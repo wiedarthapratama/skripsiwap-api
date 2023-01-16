@@ -9,6 +9,8 @@ use App\Models\Pendaftaran;
 use App\Models\Pengontrak;
 use App\Models\Pembayaran;
 use App\Models\Pengaduan;
+use App\Models\Pemilik;
+use App\Models\UsersFcm;
 use DB;
 use Validator;
 
@@ -181,6 +183,13 @@ class PengontrakController extends Controller
             $input['id_pemilik'] = $kost->id_pemilik;
             
             Pendaftaran::create($input);
+
+            // insert ke table notif
+            $pemilik = Pemilik::find($kost->id_pemilik);
+            $this->api->insert_notifikasi($pemilik->id_user, 'Ada Calon Pengontrak Baru!', 'Segera cek data calon pengontrakmu. untuk menerima dia tinggal di kost mu!');
+            $token = $this->api->getUsersFcmToken($pemilik->id_user);
+            $this->api->send_notification($token, false, 'Ada Calon Pengontrak Baru!', 'Segera cek data calon pengontrakmu. untuk menerima dia tinggal di kost mu!');
+
             $code = 200;
             $res['status'] = true;
             $res['message'] = "Pendaftaran berhasil diinput";
@@ -247,6 +256,13 @@ class PengontrakController extends Controller
             }
 
             Pembayaran::create($input);
+
+            // insert ke table notif
+            $pemilik = Pemilik::find($kost->id_pemilik);
+            $this->api->insert_notifikasi($pemilik->id_user, 'Ada pembayaran dari pengontrak!', 'Segera cek data pembayranmu. untuk memverifikasi apakah bukti pembayarannya valid atau tidak!');
+            $token = $this->api->getUsersFcmToken($pemilik->id_user);
+            $this->api->send_notification($token, false, 'Ada pembayaran dari pengontrak!', 'Segera cek data pembayranmu. untuk memverifikasi apakah bukti pembayarannya valid atau tidak!');
+
             $code = 200;
             $res['status'] = true;
             $res['message'] = "Pembayaran berhasil diinput";
@@ -302,6 +318,13 @@ class PengontrakController extends Controller
             $input['foto_pengaduan'] = url('images').'/'.$imageName;
 
             Pengaduan::create($input);
+
+            // insert ke table notif
+            $pemilik = Pemilik::find($kost->id_pemilik);
+            $this->api->insert_notifikasi($pemilik->id_user, 'Ada pengaduan dari pengontrak!', 'Segera cek data pengaduanmu. untuk melihat kendala apa yang dialami oleh pengontrak di tempat kostnya!');
+            $token = $this->api->getUsersFcmToken($pemilik->id_user);
+            $this->api->send_notification($token, false, 'Ada pengaduan dari pengontrak!', 'Segera cek data pengaduanmu. untuk melihat kendala apa yang dialami oleh pengontrak di tempat kostnya!');
+
             $code = 200;
             $res['status'] = true;
             $res['message'] = "Pengaduan berhasil diinput";
