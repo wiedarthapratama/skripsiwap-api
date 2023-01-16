@@ -115,7 +115,7 @@ class ApiController extends Controller
 
     function getUsersFcmToken($id_users)
     {
-        $usersFcm = UsersFrm::where('id_user', $pemilik->id_user)->get();
+        $usersFcm = UsersFcm::where('id_user', $pemilik->id_user)->get();
         $token = [];
         foreach ($usersFcm as $uF) {
             $token[] = $uF->fcm_token;
