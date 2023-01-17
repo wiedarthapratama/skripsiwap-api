@@ -78,7 +78,8 @@ class PendaftaranController extends Controller
                 'tanggal_masuk' => $pendaftaran->tanggal_mulai
             ]);
             $pendaftaran->update([
-                'id_pemilik' => $id_pemilik = $this->api->getPemilikLogin()
+                'id_pemilik' => $id_pemilik = $this->api->getPemilikLogin(),
+                'updated_at' => date('Y-m-d H:i:s')
             ]);
             $code = 200;
             $res['status'] = true;
