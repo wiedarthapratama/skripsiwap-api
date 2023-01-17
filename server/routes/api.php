@@ -126,6 +126,8 @@ Route::group(['middleware' => ['api','apikey']], function($router) {
         Route::post('/firebase/create-or-update-token', [FirebaseController::class, 'saveOrUpdateToken']);
 
         Route::get('/notifikasi', [NotifikasiController::class, 'all']);
+        Route::get('/notifikasi/count', [NotifikasiController::class, 'count_notif']);
+        Route::get('/notifikasi/read/{id}', [NotifikasiController::class, 'read_notif']);
     });
 
     Route::get('/firebase/test', [FirebaseController::class, 'test']);
