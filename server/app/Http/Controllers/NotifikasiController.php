@@ -56,7 +56,10 @@ class NotifikasiController extends Controller
     function read_notif($id)
     {
         try {
-            $update = Notifikasi::where('id_user', $id_user)->update(['is_read'=>1]);
+            $id_user = $this->api->getUserLogin();
+            $update = Notifikasi::where('id_user', $id_user)
+                ->where('id', $id)
+                ->update(['is_read'=>1]);
             if($update){
                 $code = 200;
                 $res['status'] = true;
