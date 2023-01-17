@@ -109,7 +109,12 @@ class AuthController extends Controller
     public function profile()
     {
         $user = auth()->user();
-        $user->is_pemilik = Pemilik::where('id_user',$user->id)->first()->id != null ? true : false;
+        $pemilik = Pemilik::where('id_user',$user->id)->first();
+        if(@$pemilik->id!=null){
+            $user->is_pemilik =  true;
+        }else{
+            $user->is_pemilik =  false;
+        }
         return response()->json($user);
     }
 
