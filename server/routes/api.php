@@ -17,6 +17,7 @@ use App\Http\Controllers\PembayaranController;
 use App\Http\Controllers\PengaduanController;
 use App\Http\Controllers\FirebaseController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\NotifikasiController;
 
 /*
 |--------------------------------------------------------------------------
@@ -123,6 +124,8 @@ Route::group(['middleware' => ['api','apikey']], function($router) {
         Route::post('/pengontrak/get-by-kosttipe-and-user', [PengontrakController::class, 'getByKostTipeAndUser']);
 
         Route::post('/firebase/create-or-update-token', [FirebaseController::class, 'saveOrUpdateToken']);
+
+        Route::get('/notifikasi', [NotifikasiController::class, 'all']);
     });
 
     Route::get('/firebase/test', [FirebaseController::class, 'test']);
