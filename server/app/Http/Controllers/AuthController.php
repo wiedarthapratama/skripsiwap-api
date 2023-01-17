@@ -86,9 +86,18 @@ class AuthController extends Controller
      */
     public function logout()
     {
-        auth()->logout();
+        try {
+            auth()->logout();
+            $code = 200;
+            $res['status'] = true;
+            $res['message'] = "User berhasil logout";
+        } catch (\Throwable $th) {
+            $code = 500;
+            $res['status'] = false;
+            $res['message'] = "User gagal logout";
+        }
 
-        return response()->json(['message' => 'User successfully logged out.']);
+        return response()->json($res, $code);   
     }
 
     /**
