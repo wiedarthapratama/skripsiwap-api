@@ -22,7 +22,7 @@ class PendaftaranController extends Controller
             $id_pemilik = $this->api->getPemilikLogin();
             $data = Pendaftaran::with('user','pemilik','pemilik.user','kost','kost_tipe')
                 ->where('id_pemilik', $id_pemilik)
-                ->whereRaw('created_at != updated_at')
+                ->whereRaw('created_at = updated_at')
                 ->get();
             $code = 200;
             $res['status'] = true;
