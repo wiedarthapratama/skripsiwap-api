@@ -49,7 +49,7 @@ class AlamatController extends Controller
 
     function kabupatenByIdProvinsi($id)
     {
-        $data = Kabupaten::where('id_provinsi', $id)->orderBy('nama_provinsi','asc')->get();
+        $data = Kabupaten::where('id_provinsi', $id)->orderBy('nama_kabupaten','asc')->get();
         $code = 200;
         $res['status'] = true;
         $res['message'] = "Data Kabupaten";
