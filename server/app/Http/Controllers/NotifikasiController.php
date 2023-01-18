@@ -39,6 +39,7 @@ class NotifikasiController extends Controller
         try {
             $id_user = $this->api->getUserLogin();
             $data = Notifikasi::where('id_user', $id_user)
+                ->where('is_read', 0)
                 ->count();
             $code = 200;
             $res['status'] = true;

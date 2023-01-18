@@ -182,17 +182,19 @@ class PengontrakController extends Controller
             $kost = Kost::find($input['id_kost']);
             $input['id_pemilik'] = $kost->id_pemilik;
             
-            Pendaftaran::create($input);
+            // Pendaftaran::create($input);
 
             // insert ke table notif
             $pemilik = Pemilik::find($kost->id_pemilik);
             $this->api->insert_notifikasi($pemilik->id_user, 'Ada Calon Pengontrak Baru!', 'Segera cek data calon pengontrakmu. untuk menerima dia tinggal di kost mu!');
             $token = $this->api->getUsersFcmToken($pemilik->id_user);
-            $this->api->send_notification($token, false, 'Ada Calon Pengontrak Baru!', 'Segera cek data calon pengontrakmu. untuk menerima dia tinggal di kost mu!');
+            $send_notif = $this->api->send_notification($token, false, 'Ada Calon Pengontrak Baru!', 'Segera cek data calon pengontrakmu. untuk menerima dia tinggal di kost mu!');
 
             $code = 200;
             $res['status'] = true;
             $res['message'] = "Pendaftaran berhasil diinput";
+            $res['token'] = $token;
+            $res['send_notif'] = $send_notif;
         } catch (\Exception $e) {
             $code = 500;
             $res['status'] = false;
