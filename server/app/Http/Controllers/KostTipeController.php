@@ -36,7 +36,7 @@ class KostTipeController extends Controller
     function get($id)
     {
         try {
-            $data = KostTipe::with('kost','kost.provinsi','kost.kabupaten','kost.kecamatan','kost.desa','foto')
+            $data = KostTipe::with('kost','kost.provinsi','kost.kabupaten','kost.kecamatan','kost.desa','kost.pemilik','kost.pemilik.user','foto')
                 ->where('id', $id)
                 ->first();
             $code = 200;

@@ -135,7 +135,7 @@ class PengontrakController extends Controller
 
     function detail(Request $request)
     {
-        $data = KostTipe::with('kost','kost.provinsi','kost.kabupaten','kost.kecamatan','kost.desa','foto')
+        $data = KostTipe::with('kost','kost.provinsi','kost.kabupaten','kost.kecamatan','kost.desa','kost.pemilik','kost.pemilik.user','foto')
             ->where('id', $request->id_kost_tipe)
             ->first();
 
