@@ -19,7 +19,7 @@ class AlamatController extends Controller
 
     function provinsi()
     {
-        $data = Provinsi::all();
+        $data = Provinsi::orderBy('nama_provinsi','asc')->get();
         $code = 200;
         $res['status'] = true;
         $res['message'] = "Data Provinsi";
@@ -39,7 +39,7 @@ class AlamatController extends Controller
 
     function kabupaten()
     {
-        $data = Kabupaten::all();
+        $data = Kabupaten::orderBy('nama_kabupaten','asc')->get();
         $code = 200;
         $res['status'] = true;
         $res['message'] = "Data Kabupaten";
@@ -49,7 +49,7 @@ class AlamatController extends Controller
 
     function kabupatenByIdProvinsi($id)
     {
-        $data = Kabupaten::where('id_provinsi', $id)->get();
+        $data = Kabupaten::where('id_provinsi', $id)->orderBy('nama_provinsi','asc')->get();
         $code = 200;
         $res['status'] = true;
         $res['message'] = "Data Kabupaten";
@@ -69,7 +69,7 @@ class AlamatController extends Controller
 
     function kecamatan()
     {
-        $data = Kecamatan::all();
+        $data = Kecamatan::orderBy('nama_kecamatan','asc')->get();
         $code = 200;
         $res['status'] = true;
         $res['message'] = "Data Kecamatan";
@@ -79,7 +79,7 @@ class AlamatController extends Controller
 
     function kecamatanByIdKabupaten($id)
     {
-        $data = Kecamatan::where('id_kabupaten', $id)->get();
+        $data = Kecamatan::where('id_kabupaten', $id)->orderBy('nama_kecamatan','asc')->get();
         $code = 200;
         $res['status'] = true;
         $res['message'] = "Data Kecamatan";
@@ -99,7 +99,7 @@ class AlamatController extends Controller
 
     function desa()
     {
-        $data = Desa::all();
+        $data = Desa::orderBy('nama_desa','asc')->get();
         $code = 200;
         $res['status'] = true;
         $res['message'] = "Data Desa";
@@ -109,7 +109,7 @@ class AlamatController extends Controller
 
     function desaByIdKecamatan($id)
     {
-        $data = Desa::where('id_kecamatan', $id)->get();
+        $data = Desa::where('id_kecamatan', $id)->orderBy('nama_desa','asc')->get();
         $code = 200;
         $res['status'] = true;
         $res['message'] = "Data Desa";
