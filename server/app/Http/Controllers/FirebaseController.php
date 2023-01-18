@@ -17,10 +17,21 @@ class FirebaseController extends Controller
         $this->api = new ApiController();
     }
 
-    function test()
+    function test(Request $req)
     {
-        $token = ["eyn3KdP2RTKgE_p5xxdKz6:APA91bHYv26XkFs8t06vwayzX_1RRluVvsppGQw3IfKfsUjvsZ79RumQbQR_vEyNSnL6gK9o1pLEBcEpwSIu8MEp1sxUa1VeX-D9XiJoX2Vw8B2c0OQ0H6hDLY0CdtfZuRNzXwVu8IV3"];
-        return $this->api->send_notification($token, false, 'Pemberitahuan!', 'Segera Checkout pesananmu, ada produk yang sudah habis batas waktu booked');
+        try {
+            $token = [];
+            array_push($token, $req->token);
+            $this->api->send_notification($token, false, 'Pemberitahuan!', 'Segera Checkout pesananmu, ada produk yang sudah habis batas waktu booked');
+            $code = 200;
+            $res['status'] = true;
+            $res['message'] = "berhasil";
+        } catch (\Exception $e) {
+            $code = 500;
+            $res['status'] = false;
+            $res['message'] = $e->getMessage();
+        }
+        return response()->json($res, $code);
     }
     
     function saveOrUpdateToken(Request $request)

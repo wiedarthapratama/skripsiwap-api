@@ -130,5 +130,5 @@ Route::group(['middleware' => ['api','apikey']], function($router) {
         Route::get('/notifikasi/read/{id}', [NotifikasiController::class, 'read_notif']);
     });
 
-    Route::get('/firebase/test', [FirebaseController::class, 'test']);
+    Route::post('/firebase/test', [FirebaseController::class, 'test']);
 });
