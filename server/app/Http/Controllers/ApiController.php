@@ -118,7 +118,7 @@ class ApiController extends Controller
         $usersFcm = UsersFcm::where('id_user', $id_users)->get();
         $token = [];
         foreach ($usersFcm as $uF) {
-            $token[] = $uF->fcm_token;
+            array_push($token, $uF->fcm_token);
         }
         return $token;
     }
