@@ -80,7 +80,7 @@ class PengontrakController extends Controller
             }
         }
 
-        if($request->nama != null){
+        if($request->id_provinsi != null && $request->id_provinsi != 0){
             if($where=="WHERE"){
                 $where .= " k.id_provinsi = '".$request->id_provinsi."'";
             }else{
@@ -88,7 +88,7 @@ class PengontrakController extends Controller
             }
         }
 
-        if($request->nama != null){
+        if($request->id_kabupaten != null && $request->id_kabupaten != 0){
             if($where=="WHERE"){
                 $where .= " k.id_kabupaten = '".$request->id_kabupaten."'";
             }else{
@@ -96,7 +96,7 @@ class PengontrakController extends Controller
             }
         }
 
-        if($request->nama != null){
+        if($request->id_kecamatan != null && $request->id_kecamatan != 0){
             if($where=="WHERE"){
                 $where .= " k.id_kecamatan = '".$request->id_kecamatan."'";
             }else{
@@ -104,7 +104,7 @@ class PengontrakController extends Controller
             }
         }
 
-        if($request->nama != null){
+        if($request->id_desa != null && $request->id_desa != 0){
             if($where=="WHERE"){
                 $where .= " k.id_desa = '".$request->id_desa."'";
             }else{
