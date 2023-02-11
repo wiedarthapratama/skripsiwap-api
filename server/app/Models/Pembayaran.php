@@ -24,7 +24,8 @@ class Pembayaran extends Model
         'nama_rekening',
         'nama_bank',
         'to_id_bank',
-        'komentar'
+        'komentar',
+        'tahunbulan'
     ];
 
     function user()

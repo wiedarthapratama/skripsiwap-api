@@ -230,7 +230,8 @@ class PengontrakController extends Controller
     function submit_pembayaran(Request $request)
     {
         $input = $request->all();
-        $input['id_user'] = $this->api->getUserLogin();
+        $id_user = $this->api->getUserLogin();
+        $input['id_user'] = $id_user;
         $input['tanggal_bayar'] = date('Y-m-d');
         $input['status'] = 'Menunggu Verifikasi';
         $validator = Validator::make($input, [
@@ -263,6 +264,24 @@ class PengontrakController extends Controller
                 return response()->json($res, $code);
             }
 
+            $last_pembayaran = Pembayaran::where('id_user', $id_user)->orderBy('id', 'desc')->first();
+            if(@$last_pembayaran->id!=null){
+                $tahunbulan = $last_pembayaran->tahunbulan;
+                $tahun = substr($tahunbulan,0,4);
+                $bulan = substr($tahunbulan,4);
+                $bulan = $bulan+1;
+                if(strlen($bulan)==1){
+                    $bulan = "0".$bulan;
+                }
+                if($bulan>12){
+                    $bulan = "01";
+                    $tahun = $tahun+1;
+                }
+                $tahunbulan = $tahun.$bulan;
+                $input['tahunbulan'] = $tahunbulan; 
+            }else{
+                $input['tahunbulan'] = date('Ym');
+            }
             Pembayaran::create($input);
 
             // insert ke table notif

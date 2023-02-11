@@ -27,6 +27,7 @@ class Pembayaran extends Migration
             $table->string('nama_bank');
             $table->integer('to_id_bank');
             $table->string('komentar');
+            $table->string('tahunbulan');
             $table->timestamps();
 
             // $table->integer('id_user')->references('id')->on('users');
