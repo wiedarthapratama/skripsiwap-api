@@ -18,6 +18,7 @@ use App\Http\Controllers\PengaduanController;
 use App\Http\Controllers\FirebaseController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\NotifikasiController;
+use App\Http\Controllers\ApiController;
 
 /*
 |--------------------------------------------------------------------------
@@ -131,4 +132,5 @@ Route::group(['middleware' => ['api','apikey']], function($router) {
     });
 
     Route::post('/firebase/test', [FirebaseController::class, 'test']);
+    Route::get('/cronjob', [ApiController::class, 'getDataForNotifPayment']);
 });

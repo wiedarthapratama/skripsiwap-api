@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Pemilik;
 use App\Models\Notifikasi;
 use App\Models\UsersFcm;
+use DB;
 
 class ApiController extends Controller
 {
@@ -121,5 +122,48 @@ class ApiController extends Controller
             array_push($token, $uF->fcm_token);
         }
         return $token;
+    }
+
+    function getUsersFcmTokenMany($id_users)
+    {
+        $usersFcm = UsersFcm::whereIn('id_user', $id_users)->get();
+        $token = [];
+        foreach ($usersFcm as $uF) {
+            array_push($token, $uF->fcm_token);
+        }
+        return $token;
+    }
+
+    function getDataForNotifPayment()
+    {
+        try {
+            // $day = date('d');
+            $day = 8;
+            $data = DB::select(DB::raw("
+                select *
+                from (
+                    select id_user, min(tanggal_bayar) as tanggal
+                    from pembayaran
+                    group by id_user
+                ) v 
+                where day(tanggal) = '".$day."'
+            "));
+            $id_users = [];
+            foreach ($data as $d) {
+                $this->insert_notifikasi($d->id_user, 'Ada Calon Pengontrak Baru!', 'Segera cek data calon pengontrakmu. untuk menerima dia tinggal di kost mu!');
+                array_push($id_users, $d->id_user);
+            }
+            $token = $this->getUsersFcmTokenMany($id_users);
+            $send_notif = $this->send_notification($token, false, 'Waktu pembayaran kost sudah tiba!', 'Segera lakukan pembayaran kost! abaikan bila anda sudah membayarnya.');
+            $res['status'] = true;
+            $res['code'] = 200;
+            $res['message'] = 'Notification has been sent';
+        } catch (\Throwable $th) {
+            $res['status'] = false;
+            $res['code'] = 500;
+            $res['message'] = 'Notification not sent';
+        }
+
+        return response()->json($res, $res['code']);
     }
 }
