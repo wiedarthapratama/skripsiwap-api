@@ -210,18 +210,27 @@ class PengontrakController extends Controller
             $data = Pengontrak::with('user','kost_tipe','kost_tipe.kost','kost_tipe.kost.provinsi','kost_tipe.kost.kabupaten','kost_tipe.kost.kecamatan','kost_tipe.kost.desa','kost_tipe.foto')
                 ->where('id_user', $this->api->getUserLogin())
                 ->first();
+
+            $pembayaran = Pembayaran::where('id_user', $this->api->getUserLogin())->get();
+            foreach ($pembayaran as $p) {
+                $tahun = substr($p->tahunbulan,0,4);
+                // $bulan = substr($tahunbulan,4);
+                $bulan = date('F', strtotime($p->tahunbulan.'01'));
+                $p->judul = 'Pembayaran '.$bulan.' '.$tahun;
+            }
     
-            $data->list_pembayaran = Pembayaran::where('id_user', $this->api->getUserLogin())->get();
+            $data->list_pembayaran = $pembayaran;
             $data->list_pengaduan = Pengaduan::where('id_user', $this->api->getUserLogin())->get();
     
             $code = 200;
             $res['status'] = true;
             $res['message'] = "Detail Kost Saya";
             $res['data'] = $data;
-        } catch (\Throwable $th) {
+        } catch (\Exception $e) {
             $code = 404;
             $res['status'] = false;
             $res['message'] = "Anda belum mempunyai kost. silahkan cari kost anda terlebih dahulu";
+            // $res['error'] = $e->getMessage();
         }
 
         return response()->json($res, $code); 
