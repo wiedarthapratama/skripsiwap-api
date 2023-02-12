@@ -213,7 +213,7 @@ class PengontrakController extends Controller
 
             $pembayaran = Pembayaran::where('id_user', $this->api->getUserLogin())->get();
             foreach ($pembayaran as $p) {
-                $tahun = substr($p->tahunbulan,0,4);
+                $tahun = date('y', strtotime($p->tahunbulan.'01'));
                 // $bulan = substr($tahunbulan,4);
                 $bulan = date('F', strtotime($p->tahunbulan.'01'));
                 $p->judul = 'Pembayaran '.$bulan.' '.$tahun;
