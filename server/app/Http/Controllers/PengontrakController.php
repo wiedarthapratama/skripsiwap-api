@@ -182,7 +182,7 @@ class PengontrakController extends Controller
             $kost = Kost::find($input['id_kost']);
             $input['id_pemilik'] = $kost->id_pemilik;
             
-            // Pendaftaran::create($input);
+            Pendaftaran::create($input);
 
             // insert ke table notif
             $pemilik = Pemilik::find($kost->id_pemilik);
